@@ -51,8 +51,9 @@ const postJob = async (req, res) => {
 
 const getUserJobs = async (req, res) => {
   try {
-    const userId = req.params.userId
-    const jobs = await Job.find({ userId })
+    const id = req.params.userId
+    const user = await User.findOne({ id })
+    const jobs = user.jobs
     res.status(200).json(jobs)
   } catch (error) {
     console.error(error)
