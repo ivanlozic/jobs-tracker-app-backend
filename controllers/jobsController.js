@@ -62,19 +62,29 @@ const getUserJobs = async (req, res) => {
 }
 
 const editJob = async (req, res) => {
-  if (req.method === 'PUT') {
-    const jobId = req.query.id
-    const { answered, interviewed } = req.body
-
-    try {
-      const updatedJob = await updateJob(jobId, { answered, interviewed })
-      res.status(200).json(updatedJob)
-    } catch (error) {
-      console.error('Error updating job:', error)
-      res.status(500).json({ message: 'Error updating job' })
+  try {
+    const id = req.params.userId
+    const updatedJob = req.body
+    const user = await User.findOne({ id })
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
     }
-  } else {
-    res.status(405).json({ message: 'Method not allowed' })
+
+    const jobIndex = user.jobs.findIndex(
+      (singleJob) => singleJob.jobId === updatedJob.jobId
+    )
+    if (jobIndex === -1) {
+      return res.status(404).json({ message: 'Job not found' })
+    }
+
+    user.jobs[jobIndex] = updatedJob
+
+    await user.save()
+
+    return res.status(200).json({ message: 'Job updated successfully' })
+  } catch (error) {
+    console.error('Error updating job:', error)
+    return res.status(500).json({ message: 'Internal server error' })
   }
 }
 
