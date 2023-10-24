@@ -5,8 +5,10 @@ const jobsController = require('../controllers/jobsController')
 
 router.post('/register', userController.register)
 router.post('/login', userController.login)
+router.put('/editProfile/:userId', userController.editProfile)
 
-router.post('/postJob', jobsController.postJob);
-router.get('/userJobs/:userId', jobsController.getUserJobs);
-router.put('/editJob/:userId', jobsController.editJob);
+router.post('/postJob', jobsController.postJob)
+router.get('/userJobs/:userId', jobsController.getUserJobs)
+router.put('/editJob/:userId', jobsController.editJob)
+
 module.exports = router

@@ -30,6 +30,37 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 }
+
+exports.editProfile = async (req, res) => {
+  const { userId } = req.params
+
+  const { name, surname, email, username, password } = req.body
+
+  try {
+    const user = await User.findOne({ id: userId })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    user.name = name
+    user.surname = surname
+    user.email = email
+    user.username = username
+
+    user.password = password
+
+    await user.save()
+
+    res.status(200).json({
+      status: 'success',
+      data: user
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'An error occurred during profile update' })
+  }
+}
 exports.login = async (req, res) => {
   const { username, password } = req.body
 
