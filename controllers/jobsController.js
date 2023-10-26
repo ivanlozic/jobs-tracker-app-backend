@@ -88,8 +88,41 @@ const editJob = async (req, res) => {
   }
 }
 
+const deleteJob = async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const jobId = req.params.jobId
+
+    const user = await User.findOne({ id: userId })
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+
+    console.log('jobId:', jobId);
+    console.log('user.jobs:', user.jobs);
+    const jobIndex = user.jobs.findIndex((job) => job.jobId == jobId);
+    console.log('jobIndex:', jobIndex);
+
+    if (jobIndex === -1) {
+      return res.status(404).json({ error: 'Job not found' })
+    }
+
+    user.jobs.splice(jobIndex, 1)
+
+    await user.save()
+
+    return res.status(200).json({ message: 'Job deleted successfully' })
+  } catch (error) {
+    console.error('Error deleting job:', error)
+    return res.status(500).json({ error: 'Internal server error' })
+  }
+}
+
 module.exports = {
   postJob,
   getUserJobs,
-  editJob
+  editJob,
+  deleteJob
 }
