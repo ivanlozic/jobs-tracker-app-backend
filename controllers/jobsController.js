@@ -42,7 +42,7 @@ const postJob = async (req, res) => {
 
     await user.save()
 
-    res.status(201).json({ message: 'Job posted successfully', job })
+    res.status(200).json({ message: 'Job posted successfully', job })
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error posting job' })
