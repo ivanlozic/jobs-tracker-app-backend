@@ -29,6 +29,10 @@ const jobSchema = new mongoose.Schema({
   interviewed: {
     type: Boolean,
     required: true
+  },
+  declined: {
+    type: Boolean,
+    required: true
   }
 })
 

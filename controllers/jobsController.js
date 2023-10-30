@@ -12,7 +12,8 @@ const postJob = async (req, res) => {
     dateOfExpiration,
     websiteLink,
     answered,
-    interviewed
+    interviewed,
+    declined
   } = req.body
 
   const id = userId
@@ -25,7 +26,6 @@ const postJob = async (req, res) => {
     }
 
     const jobId = user.jobs.length + 1
-    console.log(user, jobId)
 
     const job = new Job({
       jobId,
@@ -35,7 +35,8 @@ const postJob = async (req, res) => {
       dateOfExpiration,
       websiteLink,
       answered,
-      interviewed
+      interviewed,
+      declined
     })
 
     user.jobs.push(job)
@@ -99,11 +100,7 @@ const deleteJob = async (req, res) => {
       return res.status(404).json({ error: 'User not found' })
     }
 
-
-    console.log('jobId:', jobId);
-    console.log('user.jobs:', user.jobs);
     const jobIndex = user.jobs.findIndex((job) => job.jobId == jobId);
-    console.log('jobIndex:', jobIndex);
 
     if (jobIndex === -1) {
       return res.status(404).json({ error: 'Job not found' })
