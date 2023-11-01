@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const Job = require('../models/jobs')
-const User = require('../models/user')
+const Job = require('../models/jobModel')
+const User = require('../models/userModel')
 
 const postJob = async (req, res) => {
   const {
